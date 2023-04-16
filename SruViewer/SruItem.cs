@@ -6,11 +6,6 @@ public record SruItem(double Quantity, string Symbol, int Basis, int Proceeds, i
 {
     public static SruItem? Read(ref ReadOnlySpan<char> sru)
     {
-        if (sru.StartsWith("#BLANKETTSLUT", StringComparison.Ordinal))
-        {
-            SkipLine(ref sru);
-        }
-
         if (sru.StartsWith("#FIL_SLUT", StringComparison.Ordinal))
         {
             sru = ReadOnlySpan<char>.Empty;
@@ -27,24 +22,23 @@ public record SruItem(double Quantity, string Symbol, int Basis, int Proceeds, i
             SkipLine(ref sru);
             SkipPrefix(ref sru, "#IDENTITET");
             SkipLine(ref sru);
-            if (sru.StartsWith("#NAMN", StringComparison.Ordinal))
-            {
-                SkipLine(ref sru);
-            }
+            SkipLineWithPrefix(ref sru, "#NAMN");
         }
 
-        SkipPrefix(ref sru, "#UPPGIFT 3100 ");
-        var quantity = int.Parse(ValueSpan(ref sru));
-        SkipPrefix(ref sru, "#UPPGIFT 3101 ");
-        var symbol = ValueSpan(ref sru).Trim().ToString();
-        SkipPrefix(ref sru, "#UPPGIFT 3102 ");
-        var proceeds = int.Parse(ValueSpan(ref sru));
-        SkipPrefix(ref sru, "#UPPGIFT 3103 ");
-        var basis = int.Parse(ValueSpan(ref sru));
-        SkipPrefix(ref sru, "#UPPGIFT 3104 ");
-        var win = int.Parse(ValueSpan(ref sru));
-        SkipPrefix(ref sru, "#UPPGIFT 3105 ");
-        var loss = int.Parse(ValueSpan(ref sru));
+        var quantity = int.Parse(ValueSpan(ref sru, "#UPPGIFT 31n0 "));
+        var symbol = ValueSpan(ref sru, "#UPPGIFT 31n1 ").Trim().ToString();
+        var proceeds = int.Parse(ValueSpan(ref sru, "#UPPGIFT 31n2 "));
+        var basis = int.Parse(ValueSpan(ref sru, "#UPPGIFT 31n3 "));
+        var win = int.Parse(ValueSpan(ref sru, "#UPPGIFT 31n4 "));
+        var loss = int.Parse(ValueSpan(ref sru, "#UPPGIFT 31n5 "));
+
+        SkipLineWithPrefix(ref sru, "#UPPGIFT 3300");
+        SkipLineWithPrefix(ref sru, "#UPPGIFT 3301");
+        SkipLineWithPrefix(ref sru, "#UPPGIFT 3304");
+        SkipLineWithPrefix(ref sru, "#UPPGIFT 3305");
+        SkipLineWithPrefix(ref sru, "#UPPGIFT 7014");
+        SkipLineWithPrefix(ref sru, "#BLANKETTSLUT");
+        SkipLineWithPrefix(ref sru, "#FIL_SLUT");
 
         return new SruItem(quantity, symbol, basis, proceeds, win, loss);
 
@@ -73,19 +67,42 @@ public record SruItem(double Quantity, string Symbol, int Basis, int Proceeds, i
             sru = ReadOnlySpan<char>.Empty;
         }
 
-        static void SkipPrefix(ref ReadOnlySpan<char> sru, string text)
+        static void SkipPrefix(ref ReadOnlySpan<char> sru, string prefix)
         {
-            if (sru.StartsWith(text, StringComparison.Ordinal))
+            if (sru.StartsWith(prefix, StringComparison.Ordinal))
             {
-                sru = sru[text.Length..];
+                sru = sru[prefix.Length..];
                 return;
             }
 
-            throw new FormatException($"expected {text}");
+            throw new FormatException($"expected {prefix}");
         }
 
-        static ReadOnlySpan<char> ValueSpan(ref ReadOnlySpan<char> sru)
+        static void SkipLineWithPrefix(ref ReadOnlySpan<char> sru, string prefix)
         {
+            if (sru.StartsWith(prefix, StringComparison.Ordinal))
+            {
+                SkipLine(ref sru);
+            }
+        }
+
+        static ReadOnlySpan<char> ValueSpan(ref ReadOnlySpan<char> sru, string prefix)
+        {
+            if (sru.Length < prefix.Length)
+            {
+                throw new FormatException("sru too short to contain field");
+            }
+
+            for (var i = 0; i < prefix.Length; i++)
+            {
+                if (i != prefix.Length - 3 &&
+                    sru[i] != prefix[i])
+                {
+                    throw new FormatException($"Expected field {prefix}");
+                }
+            }
+
+            sru = sru[prefix.Length..];
             for (var i = 0; i < sru.Length; i++)
             {
                 if (sru[i] is '\r' or '\n')

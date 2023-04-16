@@ -18,12 +18,17 @@
                 #UPPGIFT 3103 17921
                 #UPPGIFT 3104 6464
                 #UPPGIFT 3105 0
-                #UPPGIFT 3100 303
-                #UPPGIFT 3101 ACET
-                #UPPGIFT 3102 53918
-                #UPPGIFT 3103 54268
-                #UPPGIFT 3104 0
-                #UPPGIFT 3105 350
+                #UPPGIFT 3110 303
+                #UPPGIFT 3111 ACET
+                #UPPGIFT 3112 53918
+                #UPPGIFT 3113 54268
+                #UPPGIFT 3114 0
+                #UPPGIFT 3115 350
+                #UPPGIFT 3300 0
+                #UPPGIFT 3301 0
+                #UPPGIFT 3304 0
+                #UPPGIFT 3305 0
+                #UPPGIFT 7014 1
                 #BLANKETTSLUT
                 #FIL_SLUT
 
