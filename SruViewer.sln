@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SruViewer", "SruViewer\SruViewer.csproj", "{369C0249-9040-4503-AC72-10A7FCF51800}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SruViewerTests", "SruViewerTests\SruViewerTests.csproj", "{F66E2BDF-2797-4B50-B6CE-B053F6AC6587}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{369C0249-9040-4503-AC72-10A7FCF51800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{369C0249-9040-4503-AC72-10A7FCF51800}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{369C0249-9040-4503-AC72-10A7FCF51800}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{369C0249-9040-4503-AC72-10A7FCF51800}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F66E2BDF-2797-4B50-B6CE-B053F6AC6587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66E2BDF-2797-4B50-B6CE-B053F6AC6587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66E2BDF-2797-4B50-B6CE-B053F6AC6587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66E2BDF-2797-4B50-B6CE-B053F6AC6587}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D66FDAFA-523E-49FC-AABC-BBCBFCE72C68}
+	EndGlobalSection
+EndGlobal
