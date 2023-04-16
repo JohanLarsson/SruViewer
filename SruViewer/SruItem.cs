@@ -6,6 +6,11 @@ public record SruItem(double Quantity, string Symbol, int Basis, int Proceeds, i
 {
     public static SruItem? Read(ref ReadOnlySpan<char> sru)
     {
+        if (sru.StartsWith("#BLANKETTSLUT", StringComparison.Ordinal))
+        {
+            SkipLine(ref sru);
+        }
+
         if (sru.StartsWith("#FIL_SLUT", StringComparison.Ordinal))
         {
             sru = ReadOnlySpan<char>.Empty;
@@ -17,10 +22,17 @@ public record SruItem(double Quantity, string Symbol, int Basis, int Proceeds, i
             return null;
         }
 
-        SkipPrefix(ref sru, "#BLANKETT");
-        SkipLine(ref sru);
-        SkipPrefix(ref sru, "#IDENTITET");
-        SkipLine(ref sru);
+        if (sru.StartsWith("#BLANKETT", StringComparison.Ordinal))
+        {
+            SkipLine(ref sru);
+            SkipPrefix(ref sru, "#IDENTITET");
+            SkipLine(ref sru);
+            if (sru.StartsWith("#NAMN", StringComparison.Ordinal))
+            {
+                SkipLine(ref sru);
+            }
+        }
+
         SkipPrefix(ref sru, "#UPPGIFT 3100 ");
         var quantity = int.Parse(ValueSpan(ref sru));
         SkipPrefix(ref sru, "#UPPGIFT 3101 ");
@@ -33,8 +45,7 @@ public record SruItem(double Quantity, string Symbol, int Basis, int Proceeds, i
         var win = int.Parse(ValueSpan(ref sru));
         SkipPrefix(ref sru, "#UPPGIFT 3105 ");
         var loss = int.Parse(ValueSpan(ref sru));
-        SkipPrefix(ref sru, "#BLANKETTSLUT");
-        SkipLine(ref sru);
+
 
         return new SruItem(quantity, symbol, basis, proceeds, win, loss);
 
