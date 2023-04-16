@@ -46,7 +46,6 @@ public record SruItem(double Quantity, string Symbol, int Basis, int Proceeds, i
         SkipPrefix(ref sru, "#UPPGIFT 3105 ");
         var loss = int.Parse(ValueSpan(ref sru));
 
-
         return new SruItem(quantity, symbol, basis, proceeds, win, loss);
 
         static void SkipLine(ref ReadOnlySpan<char> sru)
